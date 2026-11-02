@@ -1,0 +1,27 @@
+import logging
+from telegram.ext import Application, CommandHandler
+from config import BOT_TOKEN
+
+logging.basicConfig(
+    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+    level=logging.INFO
+)
+
+async def start(update, context):
+    await update.message.reply_text(
+        "🚀 Добро пожаловать в Crypto Radar!\n\n"
+        "Система аналитики Solana готовится к запуску."
+    )
+
+def main():
+    if not BOT_TOKEN:
+        raise RuntimeError("Не указан BOT_TOKEN")
+
+    app = Application.builder().token(BOT_TOKEN).build()
+    app.add_handler(CommandHandler("start", start))
+
+    print("Crypto Radar запущен!")
+    app.run_polling()
+
+if __name__ == "__main__":
+    main()
