@@ -1,0 +1,24 @@
+import aiosqlite
+
+DB_NAME = "crypto_radar.db"
+
+async def init_db():
+    async with aiosqlite.connect(DB_NAME) as db:
+        await db.execute("""
+            CREATE TABLE IF NOT EXISTS users (
+                user_id INTEGER PRIMARY KEY,
+                username TEXT,
+                joined_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            )
+        """)
+
+        await db.execute("""
+            CREATE TABLE IF NOT EXISTS watchlist (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                user_id INTEGER,
+                token_address TEXT,
+                chain TEXT DEFAULT 'solana'
+            )
+        """)
+
+        await db.commit()
